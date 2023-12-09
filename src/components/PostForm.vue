@@ -22,11 +22,18 @@
       type="text"
       placeholder="Description"
     /> -->
-    <button class="btn" @click="createPost">Add post</button>
+    <my-button
+      style="align-self: flex-end; margin-top: 15px"
+      @click="createPost"
+    >
+      Add
+    </my-button>
   </form>
 </template>
 
 <script>
+
+
 export default {
   name: "PostForm",
   data() {
@@ -47,6 +54,7 @@ export default {
       };
     },
   },
+
 };
 </script>
 
@@ -61,20 +69,5 @@ form {
   border: 1px solid tomato;
   padding: 10px 15px;
   margin-top: 15px;
-}
-
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 10px 15px;
-  background: none;
-  color: tomato;
-  border: 1px solid tomato;
-  cursor: pointer;
-
-  &:hover {
-    background: tomato;
-    color: #fff;
-  }
 }
 </style>
