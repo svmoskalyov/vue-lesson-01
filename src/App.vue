@@ -1,7 +1,11 @@
 <template>
   <div class="app">
     <h1>Posts page</h1>
-    <my-button @click="showDialog" style="margin: 15px 0"> Add </my-button>
+    <div class="app__btns">
+      <my-button @click="showDialog"> Add </my-button>
+      <my-select v-model="selectedSort" :options="sortOptions" />
+    </div>
+
     <my-dialog v-model:show="dialogVisible">
       <post-form @create="createPost" />
     </my-dialog>
@@ -14,18 +18,25 @@
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import axios from "axios";
+import MySelect from "./components/UI/MySelect.vue";
 
 export default {
   name: "App",
   components: {
     PostForm,
     PostList,
+    MySelect,
   },
   data() {
     return {
       posts: [],
       dialogVisible: false,
       isPostsLoading: false,
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "Title" },
+        { value: "body", name: "Description" },
+      ],
     };
   },
   methods: {
@@ -75,5 +86,11 @@ export default {
 
 .app {
   padding: 20px;
+}
+
+.app__btns {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
 }
 </style>
