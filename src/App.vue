@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <h1>Posts page</h1>
+    <my-input v-model="searchQuery" placeholder="Find..." />
     <div class="app__btns">
       <my-button @click="showDialog"> Add </my-button>
       <my-select v-model="selectedSort" :options="sortOptions" />
@@ -10,7 +11,7 @@
       <post-form @create="createPost" />
     </my-dialog>
     <post-list
-      :posts="sortedPosts"
+      :posts="sortedAndSearchedPosts"
       @remove="removePost"
       v-if="!isPostsLoading"
     />
@@ -37,6 +38,7 @@ export default {
       dialogVisible: false,
       isPostsLoading: false,
       selectedSort: "",
+      searchQuery: "",
       sortOptions: [
         { value: "title", name: "Title" },
         { value: "body", name: "Description" },
@@ -84,6 +86,11 @@ export default {
         post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
       );
     },
+    sortedAndSearchedPosts() {
+      return this.sortedPosts.filter((post) =>
+        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   // watch: {
   //   selectedSort(newValue) {
@@ -111,6 +118,4 @@ export default {
   justify-content: space-between;
   margin: 15px 0;
 }
-
-
 </style>
