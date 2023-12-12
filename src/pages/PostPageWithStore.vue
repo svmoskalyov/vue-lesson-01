@@ -37,7 +37,7 @@ import MySelect from "@/components/UI/MySelect";
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
-  name: "PostPage",
+  name: "PostPageWithStore",
   components: {
     PostForm,
     PostList,
