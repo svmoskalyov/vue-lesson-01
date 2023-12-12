@@ -78,8 +78,8 @@ export default {
     //   this.page = pageNumber;
     // },
     async fetchPosts() {
-      this.isPostsLoading = true;
       try {
+        this.isPostsLoading = true;
         // setTimeout(async () => {
         //   const response = await axios.get(
         //     "https://jsonplaceholder.typicode.com/posts?_limit=10"
