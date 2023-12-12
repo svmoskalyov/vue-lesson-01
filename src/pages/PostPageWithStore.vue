@@ -1,18 +1,19 @@
 <template>
   <div>
-    <h2>{{ $store.state.isAuth ? "User auth" : "User not auth" }}</h2>
-    <h2>{{ $store.state.likes }}</h2>
-    <h2>{{ $store.getters.doubleLikes }}</h2>
-    <div>
-      <my-button @click="$store.commit('incrementLikes')">Like</my-button>
-      <my-button @click="$store.commit('decrementLikes')">Dislike</my-button>
-    </div>
-
     <h1>Posts page</h1>
-    <my-input v-focus v-model="searchQuery" placeholder="Find..." />
+    <my-input
+      :model-value="searchQuery"
+      @update:model-value="setSearchQuery"
+      placeholder="Find..."
+      v-focus
+    />
     <div class="app__btns">
       <my-button @click="showDialog"> Add </my-button>
-      <my-select v-model="selectedSort" :options="sortOptions" />
+      <my-select
+        :model-value="selectedSort"
+        @update:model-value="setSelectedSort"
+        :options="sortOptions"
+      />
     </div>
 
     <my-dialog v-model:show="dialogVisible">
@@ -25,28 +26,15 @@
     />
     <div v-else>Loading...</div>
 
-    <!-- <div ref="observer" class="observer"></div> -->
     <div v-intersection="loadMorePosts" class="observer"></div>
-
-    <!-- <div class="page__wrapper">
-      <div
-        v-for="pageNumber in totalPages"
-        :key="pageNumber"
-        class="page"
-        :class="{ 'current-page': page === pageNumber }"
-        @click="changePage(pageNumber)"
-      >
-        {{ pageNumber }}
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
-import MySelect from "@/components/UI/MySelect.vue";
+import MySelect from "@/components/UI/MySelect";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "PostPage",
@@ -57,21 +45,19 @@ export default {
   },
   data() {
     return {
-      posts: [],
       dialogVisible: false,
-      isPostsLoading: false,
-      selectedSort: "",
-      searchQuery: "",
-      page: 1,
-      limit: 10,
-      totalPages: 0,
-      sortOptions: [
-        { value: "title", name: "Title" },
-        { value: "body", name: "Description" },
-      ],
     };
   },
   methods: {
+    ...mapMutations({
+      setPage: "post/setPage",
+      setSearchQuery: "post/setSearchQuery",
+      setSelectedSort: "post/setSelectedSort",
+    }),
+    ...mapActions({
+      loadMorePosts: "post/loadMorePosts",
+      fetchPosts: "post/fetchPosts",
+    }),
     createPost(post) {
       this.posts.push(post);
       this.dialogVisible = false;
@@ -82,87 +68,26 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
-    // changePage(pageNumber) {
-    //   this.page = pageNumber;
-    // },
-    async fetchPosts() {
-      this.isPostsLoading = true;
-      try {
-        // setTimeout(async () => {
-        //   const response = await axios.get(
-        //     "https://jsonplaceholder.typicode.com/posts?_limit=10"
-        //   );
-        //   this.posts = response.data;
-        // }, 1000);
-
-        const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts",
-          {
-            params: {
-              _page: this.page,
-              _limit: this.limit,
-            },
-          }
-        );
-        this.totalPages = Math.ceil(
-          response.headers["x-total-count"] / this.limit
-        );
-        this.posts = response.data;
-      } catch (error) {
-        alert("Error");
-      } finally {
-        this.isPostsLoading = false;
-      }
-    },
-    async loadMorePosts() {
-      try {
-        this.page += 1;
-        const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts",
-          {
-            params: {
-              _page: this.page,
-              _limit: this.limit,
-            },
-          }
-        );
-        this.totalPages = Math.ceil(
-          response.headers["x-total-count"] / this.limit
-        );
-        this.posts = [...this.posts, ...response.data];
-      } catch (error) {
-        alert("Error");
-      }
-    },
   },
   mounted() {
     this.fetchPosts();
-    // console.log(this.$refs.observer);
   },
   computed: {
-    sortedPosts() {
-      return [...this.posts].sort((post1, post2) =>
-        post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
-      );
-    },
-    sortedAndSearchedPosts() {
-      return this.sortedPosts.filter((post) =>
-        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    },
+    ...mapState({
+      posts: (state) => state.post.posts,
+      isPostsLoading: (state) => state.post.isPostsLoading,
+      selectedSort: (state) => state.post.selectedSort,
+      searchQuery: (state) => state.post.searchQuery,
+      page: (state) => state.post.page,
+      limit: (state) => state.post.limit,
+      totalPages: (state) => state.post.totalPages,
+      sortOptions: (state) => state.post.sortOptions,
+    }),
+    ...mapGetters({
+      sortedPosts: "post/sortedPosts",
+      sortedAndSearchedPosts: "post/sortedAndSearchedPosts",
+    }),
   },
-  watch: {
-    // page() {
-    //   this.fetchPosts();
-    // },
-  },
-  // watch: {
-  //   selectedSort(newValue) {
-  //     this.posts.sort((post1, post2) => {
-  //       return post1[newValue]?.localeCompare(post2[newValue]);
-  //     });
-  //   },
-  // },
 };
 </script>
 
