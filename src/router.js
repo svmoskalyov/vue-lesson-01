@@ -6,6 +6,7 @@ import About from "@/pages/About";
 import PostIdPage from "@/components/PostIdPage";
 import PostPageWithStore from "@/pages/PostPageWithStore";
 import PostPageCompositionApi from "@/pages/PostPageCompositionApi";
+import MoviePage from "@/pages/MoviePage.vue";
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
   {
     path: "/composition",
     component: PostPageCompositionApi,
+  },
+  {
+    path: "/movie",
+    component: MoviePage,
   },
 ];
 
