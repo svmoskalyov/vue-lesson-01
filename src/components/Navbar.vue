@@ -3,14 +3,17 @@
     <div @click="$router.push('/')">Vue</div>
     <div class="navbar__btns">
       <my-button @click="$router.push('/posts')">Posts</my-button>
-      <my-button style="margin-left: 20px" @click="$router.push('/about')">
+      <my-button style="margin-left: 10px" @click="$router.push('/movie')">
+        Movie
+      </my-button>
+      <my-button style="margin-left: 10px" @click="$router.push('/about')">
         About
       </my-button>
-      <my-button style="margin-left: 20px" @click="$router.push('/store')">
+      <my-button style="margin-left: 10px" @click="$router.push('/store')">
         Store
       </my-button>
       <my-button
-        style="margin-left: 20px"
+        style="margin-left: 10px"
         @click="$router.push('/composition')"
       >
         Composition
