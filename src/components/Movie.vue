@@ -1,10 +1,9 @@
 <template>
-  <div class="movie">
+   <div class="movie">
     <img
       :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`"
       :alt="movie.original_title"
-      class="movie-img"
-    />
+      class="movie-img" />
     <div>
       <div class="movie-name">
         {{ movie.original_title }} ({{ movie.release_date }})
@@ -13,20 +12,22 @@
       <div class="movie-buttons" v-if="!isSearch">
         <button
           class="btn movie-buttons-watched"
-          @click="movieStore.toggleWatched(movie.id)"
-        >
+          @click="movieStore.toggleWatched(movie.id)">
           <span v-if="!movie.isWatched">Watched</span>
           <span v-else>Unwatched</span>
         </button>
         <button
           class="btn movie-buttons-delete"
-          @click="movieStore.deleteMovie(movie.id)"
-        >
+          @click="movieStore.deleteMovie(movie.id)">
           Delete
         </button>
       </div>
       <div class="movie-buttons" v-else>
-        <button class="btn btn_green">Add</button>
+        <button
+          class="btn btn_green"
+          @click="searchStore.addToUserMovies(movie)">
+          Add
+        </button>
       </div>
     </div>
   </div>
@@ -34,8 +35,10 @@
 
 <script setup>
 import { useMovieStore } from "../stores/MovieStore";
+import { useSearchStore } from "../stores/SearchStore";
 
 const movieStore = useMovieStore();
+const searchStore = useSearchStore();
 const props = defineProps({
   movie: {
     type: Object,

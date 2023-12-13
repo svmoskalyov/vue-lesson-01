@@ -4,8 +4,7 @@
       type="text"
       class="search-input"
       placeholder="Input movie"
-      v-model="searchMovie"
-    />
+      v-model="searchMovie" />
   </form>
   <Loader v-if="searchStore.loader" />
   <div v-else>
@@ -13,8 +12,7 @@
       v-for="movie of searchStore.movies"
       :key="movie.id"
       :movie="movie"
-      :is-search="true"
-    />
+      :is-search="true" />
   </div>
 </template>
 

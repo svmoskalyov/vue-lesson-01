@@ -7,14 +7,12 @@
     <div class="tabs">
       <button
         :class="['btn', { btn_green: movieStore.activeTab === 1 }]"
-        @click="setTab(1)"
-      >
+        @click="setTab(1)">
         Favorite
       </button>
       <button
         :class="['btn', { btn_green: movieStore.activeTab === 2 }]"
-        @click="setTab(2)"
-      >
+        @click="setTab(2)">
         Search
       </button>
     </div>
@@ -24,15 +22,13 @@
         <Movie
           v-for="movie of movieStore.watchedMovies"
           :key="movie.id"
-          :movie="movie"
-        />
+          :movie="movie" />
       </div>
       <h3>All Movies (count: {{ movieStore.totalCountMovies }})</h3>
       <Movie
         v-for="movie of movieStore.movies"
         :key="movie.id"
-        :movie="movie"
-      />
+        :movie="movie" />
     </div>
     <div class="search" v-else>
       <Search />
