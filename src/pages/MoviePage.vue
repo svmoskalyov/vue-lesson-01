@@ -1,10 +1,9 @@
 <template>
   <main>
-    <div class="header">
-      <!-- <img src="/logo.svg" alt="logo" class="header-logo" /> -->
+    <header class="header">
+      <img src="/logo.svg" alt="logo" class="header-logo" />
       <h2>My Favorite Movies</h2>
-    </div>
-
+    </header>
     <div class="tabs">
       <button :class="['btn', { btn_green: movieStore.activeTab === 1 }]">
         Favorite
@@ -13,16 +12,20 @@
         Search
       </button>
     </div>
-
     <div class="movies" v-if="movieStore.activeTab === 1">
-      <h3>All Movies</h3>
+      <div>
+        <h3>Watched Movies (count: {{ movieStore.watchedMovies.length }})</h3>
+        <Movie
+          v-for="movie of movieStore.watchedMovies"
+          :key="movie.id"
+          :movie="movie" />
+      </div>
+      <h3>All Movies (count: {{ movieStore.totalCountMovies }})</h3>
       <Movie
         v-for="movie of movieStore.movies"
         :key="movie.id"
-        :movie="movie"
-      />
+        :movie="movie" />
     </div>
-    
     <div class="search" v-else>Search</div>
   </main>
 </template>
